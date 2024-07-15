@@ -27,10 +27,9 @@ exports.createSpots = async (req, res, next) => {
             spotImg,
             adminApproved
         } = req.body;
-        const successRes = await SpotService.createASpot(
+        await SpotService.createASpot(
             finderId,
             imageId,
-
             currentLocation,
             landMark,
             spotName,
@@ -66,7 +65,6 @@ exports.getSpots = async (req, res, next) => {
     try {
         const { finderId } = req.body;
         const successRes = await SpotService.getSpots(finderId);
-
         res.status(201).json({ status: true, data: successRes });
     } catch (error) {
         throw error;

@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-const db = require('../config/db');
-
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
 const spotSchema = new Schema({
     finderId: {
@@ -104,5 +102,5 @@ const spotSchema = new Schema({
     },
 });
 
-const SpotModel = db.model('addedSpots', spotSchema);
+const SpotModel = mongoose.model('addedSpots', spotSchema);
 module.exports = SpotModel;

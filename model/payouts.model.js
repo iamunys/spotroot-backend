@@ -2,35 +2,36 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const userSchema = new Schema({
+const payoutSchema = new Schema({
     finderId: {
         type: String,
         lowerCase: true,
         required: true,
     },
-    userName: {
+    totalPayout: {
         type: String,
         lowerCase: true,
         required: true,
     },
-    fullName: {
+    paidPayout: {
         type: String,
         lowerCase: true,
         required: true,
     },
-     placeName: {
+    pendingPayout: {
         type: String,
         lowerCase: true,
         required: true,
-    }, 
-    phoneNumber: {
+    },
+    nextPayoutDate: {
         type: String,
+        lowerCase: true,
         required: true,
     },
-});
+},);
 
 
-const UserModel = mongoose.model('finders',userSchema);
+const PayoutModel = mongoose.model('payouts', payoutSchema);
 
 
-module.exports = UserModel;
+module.exports = PayoutModel;

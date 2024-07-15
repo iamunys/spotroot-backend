@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
 
-const connection = mongoose.createConnection('mongodb://localhost:27017/spotrootFinders').on('open', () => {
-    console.log('Mongo db is connected');
-}).on('error', () => {
-    console.log('Mongo db connection is Error');
-});
+const connectDB = async () => {
+    try {
+        await mongoose.connect('mongodb+srv://iamunys:92398669Atlas@spotroot-finder.sotxb3s.mongodb.net' +
+            '/spotroot-finder', {
+        });
+        console.log('Database is connected');
+    } catch (err) {
+        console.error('Error connecting to the database:', err);
+        process.exit(1);
+    }
+};
 
-module.exports = connection;
+module.exports = connectDB;

@@ -1,4 +1,3 @@
-const { get } = require('mongoose');
 const SpotModel = require('../model/spot.model')
 
 class SpotService {
@@ -27,7 +26,6 @@ class SpotService {
         try {
             const createSpot = new SpotModel({
                 finderId, imageId,
-
                 currentLocation,
                 landMark,
                 spotName,
@@ -57,9 +55,7 @@ class SpotService {
 
     static async getSpots(finderId) {
         try {
-            const getSpots = await SpotModel.find();
-
-            // const getSpots = await SpotModel.find({finderId});
+            const getSpots = await SpotModel.find({finderId});
             return getSpots;
         } catch (err) {
             throw err;
