@@ -7,21 +7,29 @@ const { get } = require('mongoose');
 
 class PayoutService {
 
-    static async createPassbook(finderId, totalPayout, paidPayout, pendingPayout, nextPayoutDate) {
+    static async createPassbook(finderId, totalPayout, paidPayout, pendingPayout, lastPayoutDate) {
         try {
-            const createPassbook = new PayoutModel({ finderId, totalPayout, paidPayout, pendingPayout, nextPayoutDate });
+            const createPassbook = new PayoutModel({ finderId, totalPayout, paidPayout, pendingPayout, lastPayoutDate });
             return await createPassbook.save();
         } catch (err) {
             throw err;
         }
     }
 
-    static async updatePassbook(finderId, totalPayout, pendingPayout, nextPayoutDate) {
+    static async updatePassbook(finderId, totalPayout, pendingPayout, lastPayoutDate) {
         try {
             const getPayouts = await PayoutModel.find({ finderId });
-            pendingPayout = parseInt(totalPayout) - parseInt(getPayouts[0].paidPayout);
-             await PayoutModel.updateMany({ finderId }, { finderId, totalPayout, pendingPayout, nextPayoutDate });
-             return PayoutModel.find({finderId});
+            pendingPayout = parseFloat(totalPayout) - parseFloat(getPayouts[0].paidPayout);
+            await PayoutModel.updateMany({ finderId }, { finderId, totalPayout, pendingPayout, lastPayoutDate });
+            return PayoutModel.find({ finderId });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    static async getIncomUsingId(finderId) {
+        try {
+            return await PayoutModel.find({ finderId });
         } catch (err) {
             throw err;
         }

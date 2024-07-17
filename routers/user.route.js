@@ -2,7 +2,7 @@ const express = require('express');
 const UserController = require('../controller/user.controller');
 const SpotController = require('../controller/spot.controller');
 const PayoutController = require('../controller/payouts.controller');
-const UserService = require('../services/user.service');
+const { verifyToken } = require('../middleWare/authentication');
 
 
 const router = express.Router();
@@ -10,13 +10,11 @@ const router = express.Router();
 
 router.post('/registration',UserController.register);
 router.post('/login',UserController.login);
-router.post('/checkUsername',UserController.checkUsername);
-router.post('/createSpot',UserService.verifyToken,SpotController.createSpots);
-router.post('/getSpots',UserService.verifyToken,SpotController.getSpots);
-router.patch('/getEarnings',UserService.verifyToken,PayoutController.getEarnings);
-
-
-
+router.get('/checkUsername/:userName',UserController.checkUsername);
+router.post('/createSpot',verifyToken,SpotController.createSpots);
+router.get('/getSpots/:finderId/:status',verifyToken,SpotController.getSpots);
+router.patch('/getEarnings',verifyToken,PayoutController.getEarnings);
+router.patch('/updateSpot',verifyToken,SpotController.editSpots);
 
 
 module.exports = router;

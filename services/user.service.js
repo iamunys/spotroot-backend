@@ -1,3 +1,4 @@
+const PayoutModel = require('../model/payouts.model');
 const UserModel = require('../model/user.model')
 const jwt = require('jsonwebtoken');
 
@@ -27,29 +28,42 @@ class UserService {
         }
     }
 
+    static async getAllfinders(searchText) {
+        try {
+            let user = []
+            if (searchText === 'null') {
+                user = await UserModel.find({})
+
+            } else {
+                // const sortedPayouts = await PayoutModel.aggregate([
+                //     {
+                //         $addFields: {
+                //             pendingPayout: { $toDouble: "$pendingPayout" } // Convert to number
+                //         }
+                //     },
+                //     {
+                //         $sort: { pendingPayout: -1 } // 1 for ascending, -1 for descending
+                //     }
+                // ]).exec();
+
+                user = await UserModel.find({
+                    $or: [
+                        { userName: { $regex: searchText, $options: 'i' } },
+                        { phoneNumber: { $regex: searchText, $options: 'i' } },
+
+                    ]
+                })
+
+            }
+            return user
+        } catch (err) {
+            throw err;
+        }
+    }
+
 
     static async generateToken(tokenData, secerentKey, jwtExpiry) {
         return jwt.sign(tokenData, secerentKey, { expiresIn: jwtExpiry });
-    }
-
-    static async verifyToken(req,res,next){
-
-        let authHeader = req.headers.authorization;
-        if(authHeader==undefined){
-            res.status(401).send({error:'Not authorized'})
-        }else{
-            console.log(authHeader);
-            let token = authHeader.split(" ")[1];
-            jwt.verify(token,'jwtKey',function(err,decoded){
-                if(err){
-                    res.status(500).send({error:'Authentication Failed'})
-                }else{
-                   next();
-                }
-            })
-        }
-     
-
     }
 
 

@@ -55,7 +55,8 @@ exports.createSpots = async (req, res, next) => {
 
         res.status(201).json({ status: true, success: 'Spot Added Successfully' });
     } catch (error) {
-        throw error;
+        next(error)
+
     }
 }
 
@@ -63,12 +64,38 @@ exports.createSpots = async (req, res, next) => {
 
 exports.getSpots = async (req, res, next) => {
     try {
-        const { finderId } = req.body;
-        const successRes = await SpotService.getSpots(finderId);
-        res.status(201).json({ status: true, data: successRes });
+        const { finderId,status } = req.params;
+        const successRes = await SpotService.getSpots(finderId,status);
+        res.status(200).json({ status: true, data: successRes });
     } catch (error) {
-        throw error;
+        next(error)
+
     }
 
 
 }
+
+exports.editSpots = async (req, res, next) => {
+    try {
+        const { finderId,_id,...rest } = req.body;
+        const successRes = await SpotService.updateSpots(_id,rest);
+        res.status(200).json({ status: true, data: successRes });
+    } catch (error) {
+        next(error)
+
+    }
+}
+
+
+exports.updateSpotsStatus = async (req, res, next) => {
+    try {
+        const { spotId,status } = req.params;
+        const successRes = await SpotService.editSpotsStatus(spotId,status);
+        res.status(200).json({ status: true, data: successRes });
+    } catch (error) {
+        next(error)
+
+    }
+}
+
+

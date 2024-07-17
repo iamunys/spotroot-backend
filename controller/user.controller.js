@@ -14,7 +14,8 @@ exports.register = async (req, res, next) => {
         await PayoutService.createPassbook(finderId, '0', '0', '0', year + "-" + month + "-" + date);
         res.status(201).json({ status: true, success: 'User Registered Successfully' });
     } catch (error) {
-        throw error;
+        next(error)
+        // throw error;
     }
 
 }
@@ -23,25 +24,42 @@ exports.login = async (req, res, next) => {
     const { finderId } = req.body;
     try {
         const finderResponse = await UserService.checkfinder(finderId);
-        console.log('this is the finder $finder:' + finderResponse);
-let tokenData ={finderResponse};
-const token = await UserService.generateToken(tokenData,'jwtKey','14d');
+        console.log('This is the finder:' + finderResponse);
+        if(!finderResponse) res.status(201).json({ status: true, message: 'User not registered' });
+        let tokenData = { finderResponse };
+                const token = await UserService.generateToken(tokenData, process.env.SECRET_KEY, '2d');
         res.status(201).json({ status: true, token: token });
     } catch (error) {
-        throw error;
+        // throw error;
+        next(error)
+
     }
 
 }
 exports.checkUsername = async (req, res, next) => {
     try {
-        const { userName } = req.body;
+        const { userName } = req.params;
         const user = await UserService.checkUserName(userName);
+
         if (user) {
-            res.status(204).json({ status: false, success: 'Username already taken' });
-        } else {
-            res.status(201).json({ status: true, success: 'Username Available' });
+            res.status(200).json({ status: false, success: 'Username already taken' });    
+            } else {
+            res.status(200).json({ status: true, success: 'Username Available' });    
         }
     } catch (error) {
-        throw error;
+        next(error)
+
+    }
+}
+
+exports.getUsers = async (req, res, next) => {
+    try {
+        const { searchText } = req.params;
+        const users = await UserService.getAllfinders(searchText);
+
+        res.status(200).json({ status: true,  users });
+    } catch (error) {
+        next(error)
+
     }
 }

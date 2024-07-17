@@ -46,6 +46,7 @@ class SpotService {
                 bestTime,
                 moreAbout, addedDate, spotImg, adminApproved
             });
+            createSpot.adminApproved = false
             return await createSpot.save();
         } catch (err) {
             throw err;
@@ -53,15 +54,55 @@ class SpotService {
     }
 
 
-    static async getSpots(finderId) {
+    static async getSpots(finderId, status) {
         try {
-            const getSpots = await SpotModel.find({finderId});
+            let getSpots = []
+            if (status === 'pending') {
+                getSpots = await SpotModel.find({ finderId, adminApproved: false });
+            } else if (status === 'approved') {
+                getSpots = await SpotModel.find({ finderId, adminApproved: true });
+            } else if (status === 'all') {
+                getSpots = await SpotModel.find({ finderId });
+            }
             return getSpots;
         } catch (err) {
             throw err;
         }
     }
 
+    static async updateSpots(spotId, data) {
+        try {
+            let getSpots = await SpotModel.updateOne(
+                { _id:spotId },
+                {
+                    $set: {
+                        ...data
+                    }
+                }
+            );
+
+            return getSpots;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    static async editSpotsStatus(spotId, status) {
+        try {
+            let getSpots = await SpotModel.updateOne(
+                { _id:spotId },
+                {
+                    $set: {
+                        adminApproved: status
+                    }
+                }
+            );
+
+            return getSpots;
+        } catch (err) {
+            throw err;
+        }
+    }
 
 }
 

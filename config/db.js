@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
-        await mongoose.connect('mongodb+srv://iamunys:92398669Atlas@spotroot-finder.sotxb3s.mongodb.net' +
-            '/spotroot-finder', {
-        });
+        await mongoose.connect(process.env.MONGO_DB_URL);
         console.log('Database is connected');
     } catch (err) {
         console.error('Error connecting to the database:', err);

@@ -23,10 +23,10 @@ const payoutSchema = new Schema({
         lowerCase: true,
         required: true,
     },
-    nextPayoutDate: {
+    lastPayoutDate: {
         type: String,
         lowerCase: true,
-        required: true,
+        // required: true,
     },
 },);
 

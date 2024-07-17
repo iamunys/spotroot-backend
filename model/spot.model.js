@@ -100,6 +100,7 @@ const spotSchema = new Schema({
         type: Boolean,
         lowerCase: true,
     },
+  
 });
 
 const SpotModel = mongoose.model('addedSpots', spotSchema);
