@@ -57,15 +57,26 @@ class SpotService {
     static async getSpots(finderId, status) {
         try {
             let getSpots = []
-            if (status === 'pending') {
-                getSpots = await SpotModel.find({ finderId, adminApproved: false });
-            } else if (status === 'approved') {
-                getSpots = await SpotModel.find({ finderId, adminApproved: true });
-            } else if (status === 'all') {
-                getSpots = await SpotModel.find({ finderId });
+
+            if (finderId === 'all') {
+                if (status === 'pending') {
+                    getSpots = await SpotModel.find({adminApproved: false });
+                } else if (status === 'approved') {
+                    getSpots = await SpotModel.find({adminApproved: true });
+                } else if (status === 'all') {
+                    getSpots = await SpotModel.find({});
+                }
+            } else {
+                if (status === 'pending') {
+                    getSpots = await SpotModel.find({ finderId, adminApproved: false });
+                } else if (status === 'approved') {
+                    getSpots = await SpotModel.find({ finderId, adminApproved: true });
+                } else if (status === 'all') {
+                    getSpots = await SpotModel.find({ finderId });
+                }
             }
-            return getSpots;
-        } catch (err) {
+                return getSpots;
+             } catch (err) {
             throw err;
         }
     }
