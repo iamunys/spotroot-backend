@@ -21,14 +21,15 @@ exports.login = async (req, res, next) => {
 
 exports.updateAmt = async (req, res, next) => {
     try {
-        const { paidAmount, finderId } = req.params
+        const { paidAmount, finderId } = req.params;
+      const  { lastPayoutDate } = req.body;
+
         const payouts = await PayoutModel.findOne({ finderId })
 
-        payouts.paidPayout = (parseFloat(payouts.paidPayout) + parseFloat(paidAmount))
-        payouts.pendingPayout = (parseFloat(payouts.pendingPayout) - parseFloat(paidAmount))
-
+        payouts.paidPayout = (parseFloat(payouts.paidPayout) + parseFloat(paidAmount));
+        payouts.pendingPayout = (parseFloat(payouts.pendingPayout) - parseFloat(paidAmount));
+        payouts.lastPayoutDate = lastPayoutDate;
         payouts.save()
-
         res.status(200).json({ status: true, message: 'updated successfully' });
 
 
