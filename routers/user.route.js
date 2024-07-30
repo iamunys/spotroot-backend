@@ -14,7 +14,12 @@ router.get('/checkUsername/:userName',UserController.checkUsername);
 router.post('/createSpot',verifyToken,SpotController.createSpots);
 router.get('/getSpots/:finderId/:status',verifyToken,SpotController.getSpots);
 router.patch('/getEarnings',verifyToken,PayoutController.getEarnings);
-router.patch('/updateSpot',verifyToken,SpotController.editSpots);
+router.patch('/updateSpot', verifyToken, SpotController.editSpots);
+
+router.get('/getPlaces/:query', verifyToken, SpotController.getPlaces);
+router.get('/getPlacesDetails/:placeId',verifyToken,SpotController.getPlacesDetails);
+
+
 
 
 module.exports = router;

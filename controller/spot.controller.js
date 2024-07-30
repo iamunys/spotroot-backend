@@ -95,7 +95,33 @@ exports.updateSpotsStatus = async (req, res, next) => {
     } catch (error) {
         next(error)
 
+    }  
+
+}
+
+
+exports.getPlaces = async (req, res, next) => {
+    try {
+        const { query } = req.params;
+        console.log(query);
+        const successRes = await SpotService.getPlaces(query);
+        res.status(200).json({ status: true, data: successRes });
+    } catch (error) {
+        next(error)
     }
+
+}
+
+exports.getPlacesDetails = async (req, res, next) => {
+    try {
+        const { placeId } = req.params;
+        console.log(placeId);
+        const successRes = await SpotService.getPlacesDetails(placeId);
+        res.status(200).json({ status: true, data: successRes });
+    } catch (error) {
+        next(error)
+    }
+
 }
 
 
